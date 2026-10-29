@@ -1,430 +1,1899 @@
 <!doctype html>
 <html lang="id">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nakku · Prototype Interaktif</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{
-  --navy:#1C2541; --navy2:#26315A; --ground:#F2F4F8; --card:#FFFFFF;
-  --muted:#4A5470; --soft:#C9D3EA; --yellow:#FFC233; --yellow-d:#E6A817;
-  --teal:#1FA38E; --teal-d:#0F7A6C; --green:#5BE0A8; --red:#E5484D; --strap:#FF8A65;
-  --screen:#10192E;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--ground);color:var(--navy);font-family:'Nunito',system-ui,sans-serif}
-h1,h2,h3,.display{font-family:'Baloo 2',system-ui,sans-serif}
-button{font-family:inherit;cursor:pointer}
-.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 48px}
-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:20px}
-header h1{margin:0;font-size:40px;line-height:1;font-weight:800}
-.eyebrow{margin:0 0 4px;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-d)}
-header p.lead{margin:0;max-width:460px;font-size:15px;line-height:1.5;color:var(--muted)}
-.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
-@media (max-width:820px){.stage{grid-template-columns:minmax(0,1fr)}}
-.panel{background:var(--card);border-radius:28px;padding:22px;display:flex;flex-direction:column;align-items:center;gap:16px}
-.panel-title{align-self:stretch;display:flex;justify-content:space-between;align-items:center}
-.panel-title h2{margin:0;font-size:22px;font-weight:700}
-.tag{font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--ground);color:var(--muted)}
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nakku · Prototype Interaktif</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #1c2541;
+        --navy2: #26315a;
+        --ground: #f2f4f8;
+        --card: #ffffff;
+        --muted: #4a5470;
+        --soft: #c9d3ea;
+        --yellow: #ffc233;
+        --yellow-d: #e6a817;
+        --teal: #1fa38e;
+        --teal-d: #0f7a6c;
+        --green: #5be0a8;
+        --red: #e5484d;
+        --strap: #ff8a65;
+        --screen: #10192e;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--ground);
+        color: var(--navy);
+        font-family: "Nunito", system-ui, sans-serif;
+      }
+      h1,
+      h2,
+      h3,
+      .display {
+        font-family: "Baloo 2", system-ui, sans-serif;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 28px 16px 48px;
+      }
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 40px;
+        line-height: 1;
+        font-weight: 800;
+      }
+      .eyebrow {
+        margin: 0 0 4px;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--teal-d);
+      }
+      header p.lead {
+        margin: 0;
+        max-width: 460px;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+      .stage {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 20px;
+      }
+      @media (max-width: 820px) {
+        .stage {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+      .panel {
+        background: var(--card);
+        border-radius: 28px;
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+      .panel-title {
+        align-self: stretch;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .panel-title h2 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .tag {
+        font-size: 12px;
+        font-weight: 800;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: var(--ground);
+        color: var(--muted);
+      }
 
-/* ---------- Pod ---------- */
-.pod-area{position:relative;width:260px;height:330px;margin-top:8px}
-.strap{position:absolute;left:75px;top:-30px;width:110px;height:390px;border-radius:55px;background:var(--strap)}
-.pod{position:absolute;inset:0;border-radius:48% / 46%;background:var(--teal);box-shadow:inset 0 -12px 0 rgba(0,0,0,.14),0 20px 36px rgba(16,25,46,.25);transition:box-shadow .25s}
-.pod.glow-y{box-shadow:inset 0 -12px 0 rgba(0,0,0,.14),0 0 0 14px rgba(255,194,51,.45),0 0 60px 20px rgba(255,194,51,.35)}
-.pod.glow-g{box-shadow:inset 0 -12px 0 rgba(0,0,0,.14),0 0 0 14px rgba(91,224,168,.35)}
-.pod.dim{opacity:.7}
-.pod.shake{animation:shake .4s}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.cam{position:absolute;top:20px;left:121px;width:18px;height:18px;border-radius:50%;background:var(--screen);box-shadow:0 0 0 4px rgba(255,255,255,.22)}
-.screen{position:absolute;top:50px;left:32px;width:196px;height:150px;border-radius:42px;background:var(--screen);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;padding:10px;transition:background .2s}
-.screen.yellow{background:var(--yellow);color:var(--navy)}
-.screen .big{font-family:'Baloo 2',sans-serif;font-size:30px;font-weight:700;line-height:1}
-.screen .sm{font-size:12px;font-weight:800;color:#9FB0D0}
-.screen.yellow .sm{color:var(--navy)}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:5px;vertical-align:1px}
-.live{display:inline-block;background:#FF6B5B;color:#fff;border-radius:6px;padding:1px 6px;font-size:11px;font-weight:800;margin-right:6px}
-.wave{display:flex;align-items:center;gap:3px;height:34px}
-.wave i{display:block;width:5px;border-radius:3px;background:var(--yellow);animation:wv .7s ease-in-out infinite}
-.wave.g i{background:var(--green)}
-.wave i:nth-child(2){animation-delay:.1s}.wave i:nth-child(3){animation-delay:.2s}.wave i:nth-child(4){animation-delay:.3s}.wave i:nth-child(5){animation-delay:.15s}.wave i:nth-child(6){animation-delay:.25s}.wave i:nth-child(7){animation-delay:.05s}
-@keyframes wv{0%,100%{height:8px}50%{height:32px}}
-.podbtn{position:absolute;top:214px;left:83px;width:94px;height:94px;border-radius:50%;border:none;background:var(--yellow);color:var(--navy);box-shadow:inset 0 -6px 0 rgba(0,0,0,.15),0 4px 0 rgba(16,25,46,.25);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;user-select:none;-webkit-user-select:none;touch-action:none;transition:transform .08s,background .2s}
-.podbtn:active,.podbtn.pressed{transform:translateY(3px);box-shadow:inset 0 3px 0 rgba(0,0,0,.18)}
-.podbtn .lbl{font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:800;line-height:1}
-.podbtn.green{background:var(--green)}
-.podbtn.red{background:#FF8A7A}
-.podbtn.grey{background:#C7CCD8;color:var(--muted)}
-.podbtn:focus-visible{outline:3px solid var(--navy);outline-offset:4px}
-.hint{font-size:14px;line-height:1.45;color:var(--muted);text-align:center;max-width:340px;margin:0}
+      /* ---------- Pod ---------- */
+      .pod-area {
+        position: relative;
+        width: 260px;
+        height: 330px;
+        margin-top: 8px;
+      }
+      .strap {
+        position: absolute;
+        left: 75px;
+        top: -30px;
+        width: 110px;
+        height: 390px;
+        border-radius: 55px;
+        background: var(--strap);
+      }
+      .pod {
+        position: absolute;
+        inset: 0;
+        border-radius: 48% / 46%;
+        background: var(--teal);
+        box-shadow:
+          inset 0 -12px 0 rgba(0, 0, 0, 0.14),
+          0 20px 36px rgba(16, 25, 46, 0.25);
+        transition: box-shadow 0.25s;
+      }
+      .pod.glow-y {
+        box-shadow:
+          inset 0 -12px 0 rgba(0, 0, 0, 0.14),
+          0 0 0 14px rgba(255, 194, 51, 0.45),
+          0 0 60px 20px rgba(255, 194, 51, 0.35);
+      }
+      .pod.glow-g {
+        box-shadow:
+          inset 0 -12px 0 rgba(0, 0, 0, 0.14),
+          0 0 0 14px rgba(91, 224, 168, 0.35);
+      }
+      .pod.dim {
+        opacity: 0.7;
+      }
+      .pod.shake {
+        animation: shake 0.4s;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-6px);
+        }
+        75% {
+          transform: translateX(6px);
+        }
+      }
+      .cam {
+        position: absolute;
+        top: 20px;
+        left: 121px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--screen);
+        box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.22);
+      }
+      .screen {
+        position: absolute;
+        top: 50px;
+        left: 32px;
+        width: 196px;
+        height: 150px;
+        border-radius: 42px;
+        background: var(--screen);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        text-align: center;
+        padding: 10px;
+        transition: background 0.2s;
+      }
+      .screen.yellow {
+        background: var(--yellow);
+        color: var(--navy);
+      }
+      .screen .big {
+        font-family: "Baloo 2", sans-serif;
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 1;
+      }
+      .screen .sm {
+        font-size: 12px;
+        font-weight: 800;
+        color: #9fb0d0;
+      }
+      .screen.yellow .sm {
+        color: var(--navy);
+      }
+      .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        margin-right: 5px;
+        vertical-align: 1px;
+      }
+      .live {
+        display: inline-block;
+        background: #ff6b5b;
+        color: #fff;
+        border-radius: 6px;
+        padding: 1px 6px;
+        font-size: 11px;
+        font-weight: 800;
+        margin-right: 6px;
+      }
+      .wave {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        height: 34px;
+      }
+      .wave i {
+        display: block;
+        width: 5px;
+        border-radius: 3px;
+        background: var(--yellow);
+        animation: wv 0.7s ease-in-out infinite;
+      }
+      .wave.g i {
+        background: var(--green);
+      }
+      .wave i:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .wave i:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+      .wave i:nth-child(4) {
+        animation-delay: 0.3s;
+      }
+      .wave i:nth-child(5) {
+        animation-delay: 0.15s;
+      }
+      .wave i:nth-child(6) {
+        animation-delay: 0.25s;
+      }
+      .wave i:nth-child(7) {
+        animation-delay: 0.05s;
+      }
+      @keyframes wv {
+        0%,
+        100% {
+          height: 8px;
+        }
+        50% {
+          height: 32px;
+        }
+      }
+      .podbtn {
+        position: absolute;
+        top: 214px;
+        left: 83px;
+        width: 94px;
+        height: 94px;
+        border-radius: 50%;
+        border: none;
+        background: var(--yellow);
+        color: var(--navy);
+        box-shadow:
+          inset 0 -6px 0 rgba(0, 0, 0, 0.15),
+          0 4px 0 rgba(16, 25, 46, 0.25);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: none;
+        transition:
+          transform 0.08s,
+          background 0.2s;
+      }
+      .podbtn:active,
+      .podbtn.pressed {
+        transform: translateY(3px);
+        box-shadow: inset 0 3px 0 rgba(0, 0, 0, 0.18);
+      }
+      .podbtn .lbl {
+        font-family: "Baloo 2", sans-serif;
+        font-size: 14px;
+        font-weight: 800;
+        line-height: 1;
+      }
+      .podbtn.green {
+        background: var(--green);
+      }
+      .podbtn.red {
+        background: #ff8a7a;
+      }
+      .podbtn.grey {
+        background: #c7ccd8;
+        color: var(--muted);
+      }
+      .podbtn:focus-visible {
+        outline: 3px solid var(--navy);
+        outline-offset: 4px;
+      }
+      .hint {
+        font-size: 14px;
+        line-height: 1.45;
+        color: var(--muted);
+        text-align: center;
+        max-width: 340px;
+        margin: 0;
+      }
 
-/* ---------- Lamp ---------- */
-.lamp-row{display:flex;align-items:center;gap:18px;align-self:stretch;background:var(--navy);border-radius:22px;padding:16px 18px;color:#fff}
-.lamp{position:relative;width:96px;height:96px;flex-shrink:0;border:none;background:transparent;padding:0}
-.lamp .dome{position:absolute;left:12px;top:4px;width:72px;height:58px;border-radius:36px 36px 10px 10px;background:#E7EAF2;transition:background .3s,box-shadow .3s}
-.lamp .base{position:absolute;left:0;top:60px;width:96px;height:26px;border-radius:10px;background:#F7F8FB}
-.lamp.kangen .dome{background:#FFD96A;box-shadow:0 0 40px 14px rgba(255,194,51,.55)}
-.lamp.balas .dome{background:#8FE0D2;box-shadow:0 0 36px 10px rgba(31,163,142,.5)}
-.lamp:focus-visible{outline:3px solid var(--yellow);outline-offset:4px;border-radius:12px}
-.lamp-row p{margin:0;font-size:14px;line-height:1.45;color:var(--soft)}
-.lamp-row strong{display:block;color:#fff;font-size:15px}
+      /* ---------- Lamp ---------- */
+      .lamp-row {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        align-self: stretch;
+        background: var(--navy);
+        border-radius: 22px;
+        padding: 16px 18px;
+        color: #fff;
+      }
+      .lamp {
+        position: relative;
+        width: 96px;
+        height: 96px;
+        flex-shrink: 0;
+        border: none;
+        background: transparent;
+        padding: 0;
+      }
+      .lamp .dome {
+        position: absolute;
+        left: 12px;
+        top: 4px;
+        width: 72px;
+        height: 58px;
+        border-radius: 36px 36px 10px 10px;
+        background: #e7eaf2;
+        transition:
+          background 0.3s,
+          box-shadow 0.3s;
+      }
+      .lamp .base {
+        position: absolute;
+        left: 0;
+        top: 60px;
+        width: 96px;
+        height: 26px;
+        border-radius: 10px;
+        background: #f7f8fb;
+      }
+      .lamp.kangen .dome {
+        background: #ffd96a;
+        box-shadow: 0 0 40px 14px rgba(255, 194, 51, 0.55);
+      }
+      .lamp.balas .dome {
+        background: #8fe0d2;
+        box-shadow: 0 0 36px 10px rgba(31, 163, 142, 0.5);
+      }
+      .lamp:focus-visible {
+        outline: 3px solid var(--yellow);
+        outline-offset: 4px;
+        border-radius: 12px;
+      }
+      .lamp-row p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.45;
+        color: var(--soft);
+      }
+      .lamp-row strong {
+        display: block;
+        color: #fff;
+        font-size: 15px;
+      }
 
-/* ---------- Phone ---------- */
-.phone{width:330px;height:640px;border-radius:44px;border:8px solid var(--navy);background:#FBFBF8;overflow:hidden;display:flex;flex-direction:column;position:relative}
-.ph-head{display:flex;align-items:center;gap:10px;padding:18px 16px 12px;border-bottom:1px solid #E1E5EE;background:#fff}
-.av{width:42px;height:42px;border-radius:50%;background:var(--teal);color:#fff;font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ph-head .nm{margin:0;font-size:17px;font-weight:800}
-.ph-head .st{margin:0;font-size:12px;font-weight:800;color:#0B7A55}
-.ph-head .st.warn{color:#8A6300}
-.banner{margin:10px 12px 0;background:#FFF4D6;border-radius:12px;padding:8px 12px;font-size:12px;font-weight:700;color:#6B5300}
-.feed{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
-.ev{max-width:86%;border-radius:16px;padding:9px 12px;font-size:13px;font-weight:700;line-height:1.35}
-.ev small{display:block;font-weight:700;color:#5A6378;font-size:11px;margin-top:2px}
-.ev.anak{align-self:flex-start;background:var(--ground)}
-.ev.ayah{align-self:flex-end;background:var(--navy);color:#fff}
-.ev.ayah small{color:var(--soft)}
-.ev.sys{align-self:center;background:transparent;color:var(--muted);font-size:12px;text-align:center;padding:2px}
-.ev.live-ev{align-self:flex-start;background:var(--teal);color:#fff}
-.kiko-mini{margin:0 12px 8px;background:#FFF4D6;border-radius:14px;padding:8px 12px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800}
-.bar{flex:1;height:8px;border-radius:4px;background:rgba(28,37,65,.15);overflow:hidden}
-.bar span{display:block;height:100%;background:var(--navy);transition:width .4s}
-.actions{display:flex;gap:8px;padding:10px 12px 16px;background:#fff;border-top:1px solid #E1E5EE}
-.act{border:none;border-radius:24px;min-height:48px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 12px}
-.act.call{background:var(--teal);color:#fff}
-.act.ptt{flex:1;background:var(--yellow);color:var(--navy);user-select:none;-webkit-user-select:none;touch-action:none}
-.act.ptt.pressed{background:var(--yellow-d)}
-.act.kangen{background:#FDE3E8;color:#9B2C42}
-.act:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
-.overlay{position:absolute;inset:0;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;padding:56px 22px 36px;gap:6px;text-align:center}
-.overlay .k{margin:0;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8FE0D2}
-.overlay .n{margin:4px 0 0;font-family:'Baloo 2',sans-serif;font-size:34px;font-weight:800;line-height:1.1}
-.overlay .t{margin:0;font-family:'Baloo 2',sans-serif;font-size:20px;color:var(--soft)}
-.ring{margin-top:36px;width:160px;height:160px;border-radius:50%;background:rgba(31,163,142,.22);display:flex;align-items:center;justify-content:center}
-.ring .av{width:110px;height:110px;font-size:48px}
-.ring.pulse{animation:pulse 1.2s ease-in-out infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(31,163,142,.45)}50%{box-shadow:0 0 0 22px rgba(31,163,142,0)}}
-.ov-actions{margin-top:auto;display:flex;gap:36px}
-.circ{width:68px;height:68px;border-radius:50%;border:none;color:#fff;display:flex;align-items:center;justify-content:center}
-.circ.ok{background:#2EBD85}.circ.no{background:var(--red)}
-.circ:focus-visible{outline:3px solid #fff;outline-offset:4px}
-.circ-lbl{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:800}
+      /* ---------- Phone ---------- */
+      .phone {
+        width: 330px;
+        height: 640px;
+        border-radius: 44px;
+        border: 8px solid var(--navy);
+        background: #fbfbf8;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+      .ph-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 18px 16px 12px;
+        border-bottom: 1px solid #e1e5ee;
+        background: #fff;
+      }
+      .av {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: var(--teal);
+        color: #fff;
+        font-family: "Baloo 2", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .ph-head .nm {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 800;
+      }
+      .ph-head .st {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 800;
+        color: #0b7a55;
+      }
+      .ph-head .st.warn {
+        color: #8a6300;
+      }
+      .banner {
+        margin: 10px 12px 0;
+        background: #fff4d6;
+        border-radius: 12px;
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #6b5300;
+      }
+      .feed {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .ev {
+        max-width: 86%;
+        border-radius: 16px;
+        padding: 9px 12px;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+      .ev small {
+        display: block;
+        font-weight: 700;
+        color: #5a6378;
+        font-size: 11px;
+        margin-top: 2px;
+      }
+      .ev.anak {
+        align-self: flex-start;
+        background: var(--ground);
+      }
+      .ev.ayah {
+        align-self: flex-end;
+        background: var(--navy);
+        color: #fff;
+      }
+      .ev.ayah small {
+        color: var(--soft);
+      }
+      .ev.sys {
+        align-self: center;
+        background: transparent;
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+        padding: 2px;
+      }
+      .ev.live-ev {
+        align-self: flex-start;
+        background: var(--teal);
+        color: #fff;
+      }
+      .kiko-mini {
+        margin: 0 12px 8px;
+        background: #fff4d6;
+        border-radius: 14px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        font-weight: 800;
+      }
+      .bar {
+        flex: 1;
+        height: 8px;
+        border-radius: 4px;
+        background: rgba(28, 37, 65, 0.15);
+        overflow: hidden;
+      }
+      .bar span {
+        display: block;
+        height: 100%;
+        background: var(--navy);
+        transition: width 0.4s;
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        padding: 10px 12px 16px;
+        background: #fff;
+        border-top: 1px solid #e1e5ee;
+      }
+      .act {
+        border: none;
+        border-radius: 24px;
+        min-height: 48px;
+        font-size: 14px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 0 12px;
+      }
+      .act.call {
+        background: var(--teal);
+        color: #fff;
+      }
+      .act.ptt {
+        flex: 1;
+        background: var(--yellow);
+        color: var(--navy);
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: none;
+      }
+      .act.ptt.pressed {
+        background: var(--yellow-d);
+      }
+      .act.kangen {
+        background: #fde3e8;
+        color: #9b2c42;
+      }
+      .act:focus-visible {
+        outline: 3px solid var(--navy);
+        outline-offset: 2px;
+      }
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background: var(--navy);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 56px 22px 36px;
+        gap: 6px;
+        text-align: center;
+      }
+      .overlay .k {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #8fe0d2;
+      }
+      .overlay .n {
+        margin: 4px 0 0;
+        font-family: "Baloo 2", sans-serif;
+        font-size: 34px;
+        font-weight: 800;
+        line-height: 1.1;
+      }
+      .overlay .t {
+        margin: 0;
+        font-family: "Baloo 2", sans-serif;
+        font-size: 20px;
+        color: var(--soft);
+      }
+      .ring {
+        margin-top: 36px;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: rgba(31, 163, 142, 0.22);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .ring .av {
+        width: 110px;
+        height: 110px;
+        font-size: 48px;
+      }
+      .ring.pulse {
+        animation: pulse 1.2s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(31, 163, 142, 0.45);
+        }
+        50% {
+          box-shadow: 0 0 0 22px rgba(31, 163, 142, 0);
+        }
+      }
+      .ov-actions {
+        margin-top: auto;
+        display: flex;
+        gap: 36px;
+      }
+      .circ {
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        border: none;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .circ.ok {
+        background: #2ebd85;
+      }
+      .circ.no {
+        background: var(--red);
+      }
+      .circ:focus-visible {
+        outline: 3px solid #fff;
+        outline-offset: 4px;
+      }
+      .circ-lbl {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 800;
+      }
 
-/* ---------- Controls ---------- */
-.controls{margin-top:20px;background:var(--card);border-radius:24px;padding:16px 20px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
-.controls h3{margin:0;font-size:18px;font-weight:700;margin-right:auto}
-.sw{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;cursor:pointer}
-.sw input{width:20px;height:20px;accent-color:var(--teal)}
-.reset{border:none;background:var(--ground);border-radius:999px;padding:10px 16px;font-size:14px;font-weight:800;color:var(--navy);min-height:44px}
-.guide{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.guide div{background:var(--navy);color:#fff;border-radius:18px;padding:14px 16px;font-size:14px;line-height:1.45}
-.guide b{color:var(--yellow);font-family:'Baloo 2',sans-serif;font-size:17px}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 18px;border-radius:14px;font-size:14px;font-weight:700;max-width:calc(100% - 32px);box-shadow:0 10px 30px rgba(16,25,46,.3);opacity:0;pointer-events:none;transition:opacity .25s}
-.toast.show{opacity:1}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header>
-    <div>
-      <p class="eyebrow">Prototype interaktif</p>
-      <h1>Nakku</h1>
-    </div>
-    <p class="lead">Coba dari dua sisi: tombol kuning di pod untuk anak, dan HP di sebelahnya untuk Ayah. Tekan sekali untuk telepon, tahan untuk walkie-talkie.</p>
-  </header>
+      /* ---------- Controls ---------- */
+      .controls {
+        margin-top: 20px;
+        background: var(--card);
+        border-radius: 24px;
+        padding: 16px 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 24px;
+        align-items: center;
+      }
+      .controls h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+        margin-right: auto;
+      }
+      .sw {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .sw input {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--teal);
+      }
+      .reset {
+        border: none;
+        background: var(--ground);
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--navy);
+        min-height: 44px;
+      }
+      .guide {
+        margin-top: 16px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      .guide div {
+        background: var(--navy);
+        color: #fff;
+        border-radius: 18px;
+        padding: 14px 16px;
+        font-size: 14px;
+        line-height: 1.45;
+      }
+      .guide b {
+        color: var(--yellow);
+        font-family: "Baloo 2", sans-serif;
+        font-size: 17px;
+      }
+      .chip {
+        margin: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 800;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: #e8f6f2;
+        color: #0b5e53;
+        text-align: center;
+      }
+      .chip.off {
+        background: var(--ground);
+        color: var(--muted);
+      }
+      .chip.bad {
+        background: #fde3e8;
+        color: #9b2c42;
+      }
+      .reset.danger {
+        background: #fde3e8;
+        color: #9b2c42;
+      }
+      .reset:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .alert {
+        margin: 10px 12px 0;
+        background: #fde3e8;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.4;
+        color: #7a1f33;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .alert b {
+        font-size: 13px;
+      }
+      .mini {
+        border: none;
+        border-radius: 999px;
+        min-height: 36px;
+        padding: 0 12px;
+        font-size: 12px;
+        font-weight: 800;
+        background: var(--navy);
+        color: #fff;
+      }
+      .mini.light {
+        background: var(--ground);
+        color: var(--navy);
+      }
+      .bukti-btn {
+        border: none;
+        border-radius: 999px;
+        min-height: 40px;
+        padding: 0 12px;
+        font-size: 12px;
+        font-weight: 800;
+        background: var(--ground);
+        color: var(--navy);
+        flex-shrink: 0;
+      }
+      .bukti {
+        position: absolute;
+        inset: 0;
+        background: #fbfbf8;
+        display: flex;
+        flex-direction: column;
+      }
+      .bukti-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 16px 12px;
+        border-bottom: 1px solid #e1e5ee;
+        background: #fff;
+      }
+      .bukti-head h3 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .bukti-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .log {
+        background: #fff;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.35;
+        border: 1px solid #e1e5ee;
+      }
+      .log small {
+        display: block;
+        color: #5a6378;
+        font-size: 11px;
+        margin-top: 2px;
+      }
+      .log.bad {
+        border-color: #f3b6c2;
+        background: #fff5f7;
+        color: #7a1f33;
+      }
+      .bukti-foot {
+        padding: 12px;
+        background: #fff;
+        border-top: 1px solid #e1e5ee;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .bukti-foot p {
+        margin: 0;
+        font-size: 11px;
+        color: #5a6378;
+        font-weight: 700;
+        text-align: center;
+      }
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 24px;
+        transform: translateX(-50%);
+        background: var(--navy);
+        color: #fff;
+        padding: 12px 18px;
+        border-radius: 14px;
+        font-size: 14px;
+        font-weight: 700;
+        max-width: calc(100% - 32px);
+        box-shadow: 0 10px 30px rgba(16, 25, 46, 0.3);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s;
+      }
+      .toast.show {
+        opacity: 1;
+      }
+      .sr {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <p class="eyebrow">Prototype interaktif</p>
+          <h1>Nakku</h1>
+        </div>
+        <p class="lead">
+          Coba dari dua sisi: tombol kuning di pod untuk anak, dan HP di
+          sebelahnya untuk Ayah. Tekan sekali untuk telepon, tahan untuk
+          walkie-talkie.
+        </p>
+      </header>
 
-  <div class="stage">
-    <section class="panel" aria-label="Sisi anak">
-      <div class="panel-title"><h2>Pod Raka</h2><span class="tag">Sisi anak</span></div>
-      <div class="pod-area">
-        <div class="strap" aria-hidden="true"></div>
-        <div class="pod" id="pod" aria-hidden="true"></div>
-        <div class="cam" aria-hidden="true"></div>
-        <div class="screen" id="podScreen" aria-live="polite"></div>
-        <button class="podbtn" id="podBtn" type="button" aria-label="Tombol Ayah: tekan sekali untuk telepon, tahan untuk bicara">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path></svg>
-          <span class="lbl" id="podLbl">AYAH</span>
-        </button>
-      </div>
-      <p class="hint" id="podHint">Tekan sekali untuk menelepon Ayah. Tahan untuk walkie-talkie.</p>
-      <div class="lamp-row">
-        <button class="lamp" id="lamp" type="button" aria-label="Lampu Ayah Ada: sentuh untuk membalas kangen">
-          <span class="dome" aria-hidden="true"></span><span class="base" aria-hidden="true"></span>
-        </button>
-        <p id="lampText"><strong>Lampu Ayah Ada</strong>Lampu tidur di kamar Raka. Menyala kuning saat Ayah kangen; sentuh untuk membalas.</p>
-      </div>
-    </section>
-
-    <section class="panel" aria-label="Sisi Ayah">
-      <div class="panel-title"><h2>HP Ayah</h2><span class="tag">Aplikasi Nakku</span></div>
-      <div class="phone" id="phone">
-        <div class="ph-head">
-          <div class="av" aria-hidden="true">R</div>
-          <div style="flex:1">
-            <p class="nm">Raka</p>
-            <p class="st" id="phStatus"></p>
+      <div class="stage">
+        <section class="panel" aria-label="Sisi anak">
+          <div class="panel-title">
+            <h2>Pod Raka</h2>
+            <span class="tag">Sisi anak</span>
           </div>
-        </div>
-        <div id="phBanner"></div>
-        <div class="feed" id="feed" aria-live="polite"></div>
-        <div class="kiko-mini">
-          <svg width="34" height="29" viewBox="0 0 40 34" aria-hidden="true"><ellipse cx="20" cy="20" rx="17" ry="13" fill="#FFC233"></ellipse><circle cx="14" cy="18" r="2.6" fill="#10192E"></circle><circle cx="26" cy="18" r="2.6" fill="#10192E"></circle><path d="M16 24 Q20 27 24 24" stroke="#10192E" stroke-width="2" fill="none" stroke-linecap="round"></path><path d="M9 10 L12 4 L15 9" fill="#FFC233"></path><path d="M25 9 L28 4 L31 10" fill="#FFC233"></path></svg>
-          <span>Kiko</span>
-          <div class="bar" role="img" id="kikoBarWrap" aria-label="Rasa senang Kiko"><span id="kikoBar"></span></div>
-          <span id="kikoPct"></span>
-        </div>
-        <div class="actions">
-          <button class="act call" id="callBtn" type="button" aria-label="Telepon Raka">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>
-          </button>
-          <button class="act ptt" id="pttBtn" type="button">Tahan, bicara</button>
-          <button class="act kangen" id="kangenBtn" type="button" aria-label="Kirim kangen ke lampu Raka">
-            <svg width="18" height="18" viewBox="0 0 24 22" fill="currentColor" aria-hidden="true"><path d="M12 21s-8.5-5.2-10.3-10.4C.6 7 2.8 3 6.6 3c2.2 0 3.8 1.2 5.4 3 1.6-1.8 3.2-3 5.4-3 3.8 0 6 4 4.9 7.6C20.5 15.8 12 21 12 21z"></path></svg>Kangen
-          </button>
-        </div>
-        <div id="phOverlay"></div>
+          <div class="pod-area">
+            <div class="strap" aria-hidden="true"></div>
+            <div class="pod" id="pod" aria-hidden="true"></div>
+            <div class="cam" aria-hidden="true"></div>
+            <div class="screen" id="podScreen" aria-live="polite"></div>
+            <button
+              class="podbtn"
+              id="podBtn"
+              type="button"
+              aria-label="Tombol Ayah: tekan sekali untuk telepon, tahan untuk bicara"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="9" y="3" width="6" height="11" rx="3"></rect>
+                <path d="M5 11a7 7 0 0 0 14 0"></path>
+                <path d="M12 18v3"></path>
+              </svg>
+              <span class="lbl" id="podLbl">AYAH</span>
+            </button>
+          </div>
+          <p class="chip" id="lockChip"></p>
+          <p class="hint" id="podHint">
+            Tekan sekali untuk menelepon Ayah. Tahan untuk walkie-talkie.
+          </p>
+          <div class="lamp-row">
+            <button
+              class="lamp"
+              id="lamp"
+              type="button"
+              aria-label="Lampu Ayah Ada: sentuh untuk membalas kangen"
+            >
+              <span class="dome" aria-hidden="true"></span
+              ><span class="base" aria-hidden="true"></span>
+            </button>
+            <p id="lampText">
+              <strong>Lampu Ayah Ada</strong>Lampu tidur di kamar Raka. Menyala
+              kuning saat Ayah kangen; sentuh untuk membalas.
+            </p>
+          </div>
+        </section>
+
+        <section class="panel" aria-label="Sisi Ayah">
+          <div class="panel-title">
+            <h2>HP Ayah</h2>
+            <span class="tag">Aplikasi Nakku</span>
+          </div>
+          <div class="phone" id="phone">
+            <div class="ph-head">
+              <div class="av" aria-hidden="true">R</div>
+              <div style="flex: 1">
+                <p class="nm">Raka</p>
+                <p class="st" id="phStatus"></p>
+              </div>
+              <button class="bukti-btn" id="buktiBtn" type="button">
+                Riwayat bukti
+              </button>
+            </div>
+            <div id="phBanner"></div>
+            <div id="phAlert"></div>
+            <div class="feed" id="feed" aria-live="polite"></div>
+            <div class="kiko-mini">
+              <svg
+                width="34"
+                height="29"
+                viewBox="0 0 40 34"
+                aria-hidden="true"
+              >
+                <ellipse
+                  cx="20"
+                  cy="20"
+                  rx="17"
+                  ry="13"
+                  fill="#FFC233"
+                ></ellipse>
+                <circle cx="14" cy="18" r="2.6" fill="#10192E"></circle>
+                <circle cx="26" cy="18" r="2.6" fill="#10192E"></circle>
+                <path
+                  d="M16 24 Q20 27 24 24"
+                  stroke="#10192E"
+                  stroke-width="2"
+                  fill="none"
+                  stroke-linecap="round"
+                ></path>
+                <path d="M9 10 L12 4 L15 9" fill="#FFC233"></path>
+                <path d="M25 9 L28 4 L31 10" fill="#FFC233"></path>
+              </svg>
+              <span>Kiko</span>
+              <div
+                class="bar"
+                role="img"
+                id="kikoBarWrap"
+                aria-label="Rasa senang Kiko"
+              >
+                <span id="kikoBar"></span>
+              </div>
+              <span id="kikoPct"></span>
+            </div>
+            <div class="actions">
+              <button
+                class="act call"
+                id="callBtn"
+                type="button"
+                aria-label="Telepon Raka"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"
+                  ></path>
+                </svg>
+              </button>
+              <button class="act ptt" id="pttBtn" type="button">
+                Tahan, bicara
+              </button>
+              <button
+                class="act kangen"
+                id="kangenBtn"
+                type="button"
+                aria-label="Kirim kangen ke lampu Raka"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 22"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 21s-8.5-5.2-10.3-10.4C.6 7 2.8 3 6.6 3c2.2 0 3.8 1.2 5.4 3 1.6-1.8 3.2-3 5.4-3 3.8 0 6 4 4.9 7.6C20.5 15.8 12 21 12 21z"
+                  ></path></svg
+                >Kangen
+              </button>
+            </div>
+            <div id="buktiOv"></div>
+            <div id="phOverlay"></div>
+          </div>
+        </section>
       </div>
-    </section>
-  </div>
 
-  <div class="controls">
-    <h3>Situasi</h3>
-    <label class="sw"><input type="checkbox" id="swClass"> Raka sedang di kelas (Mode Kelas)</label>
-    <label class="sw"><input type="checkbox" id="swBusy"> Ayah sedang rapat</label>
-    <button class="reset" id="resetBtn" type="button">Mulai ulang</button>
-  </div>
+      <div class="controls">
+        <h3>Situasi</h3>
+        <label class="sw"
+          ><input type="checkbox" id="swClass" /> Raka sedang di kelas (Mode
+          Kelas)</label
+        >
+        <label class="sw"
+          ><input type="checkbox" id="swBusy" /> Ayah sedang rapat</label
+        >
+        <button class="reset" id="selfBtn" type="button">
+          Raka melepas sendiri
+        </button>
+        <button class="reset danger" id="takeBtn" type="button">
+          Strap dipotong &amp; pod diambil
+        </button>
+        <button class="reset" id="resetBtn" type="button">Mulai ulang</button>
+      </div>
 
-  <div class="guide">
-    <div><b>Tekan 1×</b><br>Pod menelepon Ayah. Angkat dari HP Ayah, lalu bicara dua arah.</div>
-    <div><b>Tahan</b><br>Walkie-talkie: suara langsung muncul di HP Ayah tanpa perlu diangkat.</div>
-    <div><b>Kangen</b><br>Ayah menyalakan lampu kuning di kamar anak. Sentuh lampu untuk membalas.</div>
-    <div><b>Mode Kelas</b><br>Pod diam di sekolah; pesan Ayah disimpan. Tahan 5 detik untuk darurat.</div>
-  </div>
-</div>
-<div class="toast" id="toast" role="status"></div>
+      <div class="guide">
+        <div>
+          <b>Tekan 1×</b><br />Pod menelepon Ayah. Angkat dari HP Ayah, lalu
+          bicara dua arah.
+        </div>
+        <div>
+          <b>Tahan</b><br />Walkie-talkie: suara langsung muncul di HP Ayah
+          tanpa perlu diangkat.
+        </div>
+        <div>
+          <b>Kangen</b><br />Ayah menyalakan lampu kuning di kamar anak. Sentuh
+          lampu untuk membalas.
+        </div>
+        <div>
+          <b>Mode Kelas</b><br />Pod diam di sekolah; pesan Ayah disimpan. Tahan
+          5 detik untuk darurat.
+        </div>
+        <div>
+          <b>Kunci Anak</b><br />Hanya sidik jari Raka yang bisa membuka gelang.
+          Kalau strap dipotong, pod terkunci, Ayah langsung tahu, dan
+          kejadiannya tercatat.
+        </div>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
 
-<script>
-(function(){
-  var KIKO_SVG='<svg width="46" height="39" viewBox="0 0 40 34" aria-hidden="true"><ellipse cx="20" cy="20" rx="17" ry="13" fill="#FFC233"></ellipse><circle cx="14" cy="18" r="2.6" fill="#10192E"></circle><circle cx="26" cy="18" r="2.6" fill="#10192E"></circle><path d="M16 24 Q20 27 24 24" stroke="#10192E" stroke-width="2" fill="none" stroke-linecap="round"></path><path d="M9 10 L12 4 L15 9" fill="#FFC233"></path><path d="M25 9 L28 4 L31 10" fill="#FFC233"></path></svg>';
-  var WAVE=function(g){return '<div class="wave'+(g?' g':'')+'" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>';};
-  var BOOK='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9FB0D0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2z"></path><path d="M22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"></path></svg>';
-  var PHONE_ICON='<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>';
+    <script>
+      (function () {
+        var KIKO_SVG =
+          '<svg width="46" height="39" viewBox="0 0 40 34" aria-hidden="true"><ellipse cx="20" cy="20" rx="17" ry="13" fill="#FFC233"></ellipse><circle cx="14" cy="18" r="2.6" fill="#10192E"></circle><circle cx="26" cy="18" r="2.6" fill="#10192E"></circle><path d="M16 24 Q20 27 24 24" stroke="#10192E" stroke-width="2" fill="none" stroke-linecap="round"></path><path d="M9 10 L12 4 L15 9" fill="#FFC233"></path><path d="M25 9 L28 4 L31 10" fill="#FFC233"></path></svg>';
+        var WAVE = function (g) {
+          return (
+            '<div class="wave' +
+            (g ? " g" : "") +
+            '" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>'
+          );
+        };
+        var BOOK =
+          '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9FB0D0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2z"></path><path d="M22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"></path></svg>';
+        var LOCK =
+          '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FF8A7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>';
+        var PHONE_ICON =
+          '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>';
 
-  var $=function(id){return document.getElementById(id);};
-  var S;
-  function initState(){
-    S={mode:'idle',classMode:false,busy:false,lamp:'off',callStart:0,kiko:70,
-       events:[
-         {who:'sys',text:'Kemarin'},
-         {who:'anak',text:'Foto: “Lihat gambarku!”',time:'16.20'},
-         {who:'ayah',text:'Pesan suara · 0:21',time:'16.25'},
-         {who:'sys',text:'Hari ini'},
-         {who:'anak',text:'Pesan suara · 0:12',time:'06.58'}
-       ]};
-  }
-  initState();
+        var $ = function (id) {
+          return document.getElementById(id);
+        };
+        var S;
+        function initState() {
+          S = {
+            mode: "idle",
+            classMode: false,
+            busy: false,
+            lamp: "off",
+            callStart: 0,
+            kiko: 70,
+            worn: true,
+            taken: false,
+            showBukti: false,
+            log: [
+              {
+                t: "12 Okt",
+                text: "Nakku Pact terverifikasi: hak akses Ayah tanpa batasan",
+                bad: false,
+              },
+              {
+                t: "Hari ini 06.40",
+                text: "Raka memakai pod (sidik jari Raka)",
+                bad: false,
+              },
+            ],
+            events: [
+              { who: "sys", text: "Kemarin" },
+              { who: "anak", text: "Foto: “Lihat gambarku!”", time: "16.20" },
+              { who: "ayah", text: "Pesan suara · 0:21", time: "16.25" },
+              { who: "sys", text: "Hari ini" },
+              { who: "anak", text: "Pesan suara · 0:12", time: "06.58" },
+            ],
+          };
+        }
+        initState();
 
-  var ringTimer=null, tickTimer=null, holdTimer=null, sosTimer=null, toastTimer=null;
-  var podPress={down:false,start:0,ptt:false,sos:false};
-  var ayahPress={down:false,start:0};
+        var ringTimer = null,
+          tickTimer = null,
+          holdTimer = null,
+          sosTimer = null,
+          toastTimer = null;
+        var podPress = { down: false, start: 0, ptt: false, sos: false };
+        var ayahPress = { down: false, start: 0 };
 
-  function now(){var d=new Date();return String(d.getHours()).padStart(2,'0')+'.'+String(d.getMinutes()).padStart(2,'0');}
-  function fmt(sec){sec=Math.max(0,Math.round(sec));return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');}
-  function fmtLong(sec){sec=Math.max(0,Math.round(sec));return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');}
-  function addEv(who,text){S.events.push({who:who,text:text,time:now()});}
-  function kiko(n){S.kiko=Math.max(0,Math.min(100,S.kiko+n));}
-  function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.classList.remove('show');},2600);}
-  function shakePod(){var p=$('pod');p.classList.remove('shake');void p.offsetWidth;p.classList.add('shake');}
-  function stopRing(){clearTimeout(ringTimer);ringTimer=null;}
-  function startTick(){clearInterval(tickTimer);tickTimer=setInterval(render,500);}
-  function stopTick(){clearInterval(tickTimer);tickTimer=null;}
-  function setMode(m){S.mode=m;render();}
+        function now() {
+          var d = new Date();
+          return (
+            String(d.getHours()).padStart(2, "0") +
+            "." +
+            String(d.getMinutes()).padStart(2, "0")
+          );
+        }
+        function fmt(sec) {
+          sec = Math.max(0, Math.round(sec));
+          return Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0");
+        }
+        function fmtLong(sec) {
+          sec = Math.max(0, Math.round(sec));
+          return (
+            String(Math.floor(sec / 60)).padStart(2, "0") +
+            ":" +
+            String(sec % 60).padStart(2, "0")
+          );
+        }
+        function addEv(who, text) {
+          S.events.push({ who: who, text: text, time: now() });
+        }
+        function kiko(n) {
+          S.kiko = Math.max(0, Math.min(100, S.kiko + n));
+        }
+        function logEv(text, bad) {
+          S.log.push({ t: "Hari ini " + now(), text: text, bad: !!bad });
+        }
+        function toast(msg) {
+          var t = $("toast");
+          t.textContent = msg;
+          t.classList.add("show");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () {
+            t.classList.remove("show");
+          }, 2600);
+        }
+        function shakePod() {
+          var p = $("pod");
+          p.classList.remove("shake");
+          void p.offsetWidth;
+          p.classList.add("shake");
+        }
+        function stopRing() {
+          clearTimeout(ringTimer);
+          ringTimer = null;
+        }
+        function startTick() {
+          clearInterval(tickTimer);
+          tickTimer = setInterval(render, 500);
+        }
+        function stopTick() {
+          clearInterval(tickTimer);
+          tickTimer = null;
+        }
+        function setMode(m) {
+          S.mode = m;
+          render();
+        }
 
-  /* ---------- actions ---------- */
-  function anakCallsAyah(){
-    if(S.classMode){shakePod();toast('Mode Kelas: telepon ditahan sampai jam pulang. Tahan 5 detik hanya untuk darurat.');return;}
-    if(S.busy){addEv('sys','Raka mencoba menelepon. Ayah sedang rapat.');toast('Ayah sedang rapat. Tahan tombol untuk meninggalkan pesan suara.');render();return;}
-    setMode('anak_calling');
-    stopRing();ringTimer=setTimeout(function(){if(S.mode==='anak_calling'){addEv('sys','Panggilan tak terjawab dari Raka');setMode('idle');}},20000);
-  }
-  function ayahCallsAnak(){
-    if(S.mode!=='idle')return;
-    if(S.classMode){addEv('sys','Raka sedang di kelas. Panggilan dijadwalkan setelah 12.00.');toast('Raka sedang di kelas. Coba telepon setelah jam pulang.');render();return;}
-    setMode('ayah_calling');
-    stopRing();ringTimer=setTimeout(function(){if(S.mode==='ayah_calling'){addEv('sys','Raka belum mengangkat');setMode('idle');}},20000);
-  }
-  function connect(){stopRing();S.callStart=Date.now();setMode('call');startTick();}
-  function hangup(){
-    stopRing();
-    if(S.mode==='call'){var d=(Date.now()-S.callStart)/1000;addEv('sys','Telepon langsung · '+fmt(d));kiko(10);}
-    stopTick();setMode('idle');
-  }
-  function decline(){stopRing();addEv('sys','Panggilan ditolak');setMode('idle');}
+        /* ---------- actions ---------- */
+        function anakCallsAyah() {
+          if (S.classMode) {
+            shakePod();
+            toast(
+              "Mode Kelas: telepon ditahan sampai jam pulang. Tahan 5 detik hanya untuk darurat.",
+            );
+            return;
+          }
+          if (S.busy) {
+            addEv("sys", "Raka mencoba menelepon. Ayah sedang rapat.");
+            toast(
+              "Ayah sedang rapat. Tahan tombol untuk meninggalkan pesan suara.",
+            );
+            render();
+            return;
+          }
+          setMode("anak_calling");
+          stopRing();
+          ringTimer = setTimeout(function () {
+            if (S.mode === "anak_calling") {
+              addEv("sys", "Panggilan tak terjawab dari Raka");
+              setMode("idle");
+            }
+          }, 20000);
+        }
+        function ayahCallsAnak() {
+          if (S.mode !== "idle") return;
+          if (S.taken || !S.worn) {
+            addEv("sys", "Panggilan gagal: pod Raka tidak aktif");
+            if (S.taken)
+              logEv("Panggilan Ayah tidak tersambung: pod tidak aktif", true);
+            toast(
+              S.taken
+                ? "Pod Raka terkunci. Panggilan tercatat di riwayat bukti."
+                : "Raka sedang tidak memakai pod.",
+            );
+            render();
+            return;
+          }
+          if (S.classMode) {
+            addEv(
+              "sys",
+              "Raka sedang di kelas. Panggilan dijadwalkan setelah 12.00.",
+            );
+            toast("Raka sedang di kelas. Coba telepon setelah jam pulang.");
+            render();
+            return;
+          }
+          setMode("ayah_calling");
+          stopRing();
+          ringTimer = setTimeout(function () {
+            if (S.mode === "ayah_calling") {
+              addEv("sys", "Raka belum mengangkat");
+              setMode("idle");
+            }
+          }, 20000);
+        }
+        function connect() {
+          stopRing();
+          S.callStart = Date.now();
+          setMode("call");
+          startTick();
+        }
+        function hangup() {
+          stopRing();
+          if (S.mode === "call") {
+            var d = (Date.now() - S.callStart) / 1000;
+            addEv("sys", "Telepon langsung · " + fmt(d));
+            kiko(10);
+          }
+          stopTick();
+          setMode("idle");
+        }
+        function decline() {
+          stopRing();
+          addEv("sys", "Panggilan ditolak");
+          setMode("idle");
+        }
 
-  function anakPttStart(){
-    podPress.ptt=true;S.pttStart=Date.now();
-    setMode('anak_ptt');startTick();
-  }
-  function anakPttEnd(){
-    var d=(Date.now()-S.pttStart)/1000;stopTick();
-    if(S.busy){addEv('anak','Pesan suara · '+fmt(d));toast('Tersimpan sebagai pesan suara untuk Ayah.');}
-    else{addEv('anak','Walkie-talkie · '+fmt(d)+' (didengar langsung)');}
-    kiko(6);setMode('idle');
-  }
-  function ayahPttStart(){
-    if(S.mode!=='idle')return;
-    S.pttStart=Date.now();
-    if(S.classMode){setMode('ayah_rec');}else{setMode('ayah_ptt');}
-    startTick();
-  }
-  function ayahPttEnd(){
-    if(S.mode!=='ayah_ptt'&&S.mode!=='ayah_rec')return;
-    var d=(Date.now()-S.pttStart)/1000;stopTick();
-    if(S.mode==='ayah_rec'){addEv('ayah','Pesan suara · '+fmt(d)+' (sampai pukul 12.00)');}
-    else{addEv('ayah','Walkie-talkie · '+fmt(d));kiko(4);}
-    setMode('idle');
-  }
-  function sendKangen(){
-    S.lamp='kangen';addEv('ayah','Kirim kangen ke lampu');render();
-    toast('Lampu di kamar Raka menyala kuning.');
-  }
-  function lampTouch(){
-    if(S.lamp!=='kangen'){toast('Lampu belum menyala. Coba tekan “Kangen” dari HP Ayah.');return;}
-    S.lamp='balas';addEv('anak','Raka membalas kangenmu lewat lampu');kiko(8);render();
-    setTimeout(function(){if(S.lamp==='balas'){S.lamp='off';render();}},4000);
-  }
-  function sos(){
-    podPress.sos=true;stopTick();
-    addEv('sys','DARURAT: Raka menahan tombol 5 detik. Lokasi dikirim ke Ayah dan Ibu.');
-    setMode('sos');toast('Darurat terkirim ke Ayah dan Ibu.');
-    setTimeout(function(){if(S.mode==='sos')setMode('idle');},4000);
-  }
+        function anakPttStart() {
+          podPress.ptt = true;
+          S.pttStart = Date.now();
+          setMode("anak_ptt");
+          startTick();
+        }
+        function anakPttEnd() {
+          var d = (Date.now() - S.pttStart) / 1000;
+          stopTick();
+          if (S.busy) {
+            addEv("anak", "Pesan suara · " + fmt(d));
+            toast("Tersimpan sebagai pesan suara untuk Ayah.");
+          } else {
+            addEv("anak", "Walkie-talkie · " + fmt(d) + " (didengar langsung)");
+          }
+          kiko(6);
+          setMode("idle");
+        }
+        function ayahPttStart() {
+          if (S.mode !== "idle") return;
+          if (S.taken || !S.worn) {
+            if (S.taken)
+              logEv("Pesan Ayah tidak terkirim: pod tidak aktif", true);
+            toast(
+              S.taken
+                ? "Pod Raka terkunci. Upaya ini tercatat."
+                : "Raka sedang tidak memakai pod.",
+            );
+            render();
+            return;
+          }
+          S.pttStart = Date.now();
+          if (S.classMode) {
+            setMode("ayah_rec");
+          } else {
+            setMode("ayah_ptt");
+          }
+          startTick();
+        }
+        function ayahPttEnd() {
+          if (S.mode !== "ayah_ptt" && S.mode !== "ayah_rec") return;
+          var d = (Date.now() - S.pttStart) / 1000;
+          stopTick();
+          if (S.mode === "ayah_rec") {
+            addEv("ayah", "Pesan suara · " + fmt(d) + " (sampai pukul 12.00)");
+          } else {
+            addEv("ayah", "Walkie-talkie · " + fmt(d));
+            kiko(4);
+          }
+          setMode("idle");
+        }
+        function sendKangen() {
+          S.lamp = "kangen";
+          addEv("ayah", "Kirim kangen ke lampu");
+          render();
+          toast("Lampu di kamar Raka menyala kuning.");
+        }
+        function lampTouch() {
+          if (S.lamp !== "kangen") {
+            toast("Lampu belum menyala. Coba tekan “Kangen” dari HP Ayah.");
+            return;
+          }
+          S.lamp = "balas";
+          addEv("anak", "Raka membalas kangenmu lewat lampu");
+          kiko(8);
+          render();
+          setTimeout(function () {
+            if (S.lamp === "balas") {
+              S.lamp = "off";
+              render();
+            }
+          }, 4000);
+        }
+        function sos() {
+          podPress.sos = true;
+          stopTick();
+          addEv(
+            "sys",
+            "DARURAT: Raka menahan tombol 5 detik. Lokasi dikirim ke Ayah.",
+          );
+          setMode("sos");
+          toast("Darurat terkirim ke Ayah.");
+          setTimeout(function () {
+            if (S.mode === "sos") setMode("idle");
+          }, 4000);
+        }
+        function selfToggle() {
+          if (S.taken) return;
+          if (S.mode !== "idle") hangup();
+          S.worn = !S.worn;
+          if (S.worn) {
+            logEv("Raka memakai pod lagi (sidik jari Raka)");
+            addEv("sys", "Raka memakai pod lagi");
+          } else {
+            logEv("Raka melepas pod sendiri (sidik jari Raka)");
+            addEv("sys", "Raka melepas pod sendiri");
+          }
+          render();
+        }
+        function takePod() {
+          if (S.taken) return;
+          stopRing();
+          stopTick();
+          S.mode = "idle";
+          S.taken = true;
+          S.worn = false;
+          logEv(
+            "PERINGATAN: strap dipotong, pod dilepas tanpa sidik jari Raka",
+            true,
+          );
+          logEv("Pod terkunci otomatis dan berhenti terhubung", true);
+          addEv("sys", "Strap pod Raka dipotong. Pod terkunci.");
+          toast("Notifikasi ke HP Ayah: strap dipotong, pod terkunci.");
+          render();
+        }
+        function replacePod() {
+          S.taken = false;
+          S.worn = true;
+          logEv("Pod pengganti tersambung ke akun Ayah. Riwayat tetap utuh.");
+          addEv("sys", "Pod pengganti tersambung");
+          toast("Pod pengganti tersambung. Riwayat percakapan tetap ada.");
+          render();
+        }
 
-  /* ---------- pod button (press vs hold) ---------- */
-  function podDown(e){
-    if(e){e.preventDefault();}
-    if(podPress.down)return;
-    podPress.down=true;podPress.start=Date.now();podPress.ptt=false;podPress.sos=false;
-    $('podBtn').classList.add('pressed');
-    clearTimeout(holdTimer);clearTimeout(sosTimer);
-    if(S.classMode){
-      sosTimer=setTimeout(function(){if(podPress.down)sos();},5000);
-      return;
-    }
-    if(S.mode==='idle'){
-      holdTimer=setTimeout(function(){if(podPress.down)anakPttStart();},350);
-    }
-  }
-  function podUp(){
-    if(!podPress.down)return;
-    podPress.down=false;$('podBtn').classList.remove('pressed');
-    clearTimeout(holdTimer);clearTimeout(sosTimer);
-    if(podPress.sos)return;
-    if(podPress.ptt){anakPttEnd();return;}
-    if(S.classMode){if(S.mode==='idle'){shakePod();toast('Mode Kelas: tahan 5 detik hanya untuk darurat.');}return;}
-    if(S.mode==='idle')anakCallsAyah();
-    else if(S.mode==='ayah_calling')connect();
-    else if(S.mode==='call')hangup();
-    else if(S.mode==='anak_calling'){stopRing();addEv('sys','Raka membatalkan panggilan');setMode('idle');}
-  }
-  var pb=$('podBtn');
-  pb.addEventListener('pointerdown',podDown);
-  pb.addEventListener('pointerup',podUp);
-  pb.addEventListener('pointerleave',function(){if(podPress.down)podUp();});
-  pb.addEventListener('pointercancel',function(){if(podPress.down)podUp();});
-  pb.addEventListener('contextmenu',function(e){e.preventDefault();});
-  pb.addEventListener('keydown',function(e){if((e.key===' '||e.key==='Enter')&&!e.repeat){podDown(e);}});
-  pb.addEventListener('keyup',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();podUp();}});
+        /* ---------- pod button (press vs hold) ---------- */
+        function podDown(e) {
+          if (e) {
+            e.preventDefault();
+          }
+          if (podPress.down) return;
+          if (!S.worn || S.taken) {
+            shakePod();
+            toast(
+              S.taken
+                ? "Pod terkunci: hanya aktif di pergelangan Raka."
+                : "Pod sedang dilepas. Raka bisa memasangnya lagi dengan sidik jarinya.",
+            );
+            return;
+          }
+          podPress.down = true;
+          podPress.start = Date.now();
+          podPress.ptt = false;
+          podPress.sos = false;
+          $("podBtn").classList.add("pressed");
+          clearTimeout(holdTimer);
+          clearTimeout(sosTimer);
+          if (S.classMode) {
+            sosTimer = setTimeout(function () {
+              if (podPress.down) sos();
+            }, 5000);
+            return;
+          }
+          if (S.mode === "idle") {
+            holdTimer = setTimeout(function () {
+              if (podPress.down) anakPttStart();
+            }, 350);
+          }
+        }
+        function podUp() {
+          if (!podPress.down) return;
+          podPress.down = false;
+          $("podBtn").classList.remove("pressed");
+          clearTimeout(holdTimer);
+          clearTimeout(sosTimer);
+          if (podPress.sos) return;
+          if (podPress.ptt) {
+            anakPttEnd();
+            return;
+          }
+          if (S.classMode) {
+            if (S.mode === "idle") {
+              shakePod();
+              toast("Mode Kelas: tahan 5 detik hanya untuk darurat.");
+            }
+            return;
+          }
+          if (S.mode === "idle") anakCallsAyah();
+          else if (S.mode === "ayah_calling") connect();
+          else if (S.mode === "call") hangup();
+          else if (S.mode === "anak_calling") {
+            stopRing();
+            addEv("sys", "Raka membatalkan panggilan");
+            setMode("idle");
+          }
+        }
+        var pb = $("podBtn");
+        pb.addEventListener("pointerdown", podDown);
+        pb.addEventListener("pointerup", podUp);
+        pb.addEventListener("pointerleave", function () {
+          if (podPress.down) podUp();
+        });
+        pb.addEventListener("pointercancel", function () {
+          if (podPress.down) podUp();
+        });
+        pb.addEventListener("contextmenu", function (e) {
+          e.preventDefault();
+        });
+        pb.addEventListener("keydown", function (e) {
+          if ((e.key === " " || e.key === "Enter") && !e.repeat) {
+            podDown(e);
+          }
+        });
+        pb.addEventListener("keyup", function (e) {
+          if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            podUp();
+          }
+        });
 
-  /* ---------- ayah buttons ---------- */
-  var ap=$('pttBtn');
-  function aDown(e){if(e)e.preventDefault();if(ayahPress.down)return;ayahPress.down=true;ap.classList.add('pressed');ayahPttStart();}
-  function aUp(){if(!ayahPress.down)return;ayahPress.down=false;ap.classList.remove('pressed');ayahPttEnd();}
-  ap.addEventListener('pointerdown',aDown);
-  ap.addEventListener('pointerup',aUp);
-  ap.addEventListener('pointerleave',function(){if(ayahPress.down)aUp();});
-  ap.addEventListener('pointercancel',function(){if(ayahPress.down)aUp();});
-  ap.addEventListener('contextmenu',function(e){e.preventDefault();});
-  ap.addEventListener('keydown',function(e){if((e.key===' '||e.key==='Enter')&&!e.repeat){aDown(e);}});
-  ap.addEventListener('keyup',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();aUp();}});
-  $('callBtn').addEventListener('click',ayahCallsAnak);
-  $('kangenBtn').addEventListener('click',sendKangen);
-  $('lamp').addEventListener('click',lampTouch);
-  $('swClass').addEventListener('change',function(e){S.classMode=e.target.checked;if(S.classMode&&S.mode!=='idle'){hangup();}render();});
-  $('swBusy').addEventListener('change',function(e){S.busy=e.target.checked;if(S.busy&&(S.mode==='call'||S.mode==='anak_calling')){hangup();}render();});
-  $('resetBtn').addEventListener('click',function(){stopRing();stopTick();initState();$('swClass').checked=false;$('swBusy').checked=false;render();});
+        /* ---------- ayah buttons ---------- */
+        var ap = $("pttBtn");
+        function aDown(e) {
+          if (e) e.preventDefault();
+          if (ayahPress.down) return;
+          ayahPress.down = true;
+          ap.classList.add("pressed");
+          ayahPttStart();
+        }
+        function aUp() {
+          if (!ayahPress.down) return;
+          ayahPress.down = false;
+          ap.classList.remove("pressed");
+          ayahPttEnd();
+        }
+        ap.addEventListener("pointerdown", aDown);
+        ap.addEventListener("pointerup", aUp);
+        ap.addEventListener("pointerleave", function () {
+          if (ayahPress.down) aUp();
+        });
+        ap.addEventListener("pointercancel", function () {
+          if (ayahPress.down) aUp();
+        });
+        ap.addEventListener("contextmenu", function (e) {
+          e.preventDefault();
+        });
+        ap.addEventListener("keydown", function (e) {
+          if ((e.key === " " || e.key === "Enter") && !e.repeat) {
+            aDown(e);
+          }
+        });
+        ap.addEventListener("keyup", function (e) {
+          if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            aUp();
+          }
+        });
+        $("callBtn").addEventListener("click", ayahCallsAnak);
+        $("kangenBtn").addEventListener("click", sendKangen);
+        $("lamp").addEventListener("click", lampTouch);
+        $("swClass").addEventListener("change", function (e) {
+          S.classMode = e.target.checked;
+          if (S.classMode && S.mode !== "idle") {
+            hangup();
+          }
+          render();
+        });
+        $("swBusy").addEventListener("change", function (e) {
+          S.busy = e.target.checked;
+          if (S.busy && (S.mode === "call" || S.mode === "anak_calling")) {
+            hangup();
+          }
+          render();
+        });
+        $("selfBtn").addEventListener("click", selfToggle);
+        $("takeBtn").addEventListener("click", takePod);
+        $("buktiBtn").addEventListener("click", function () {
+          S.showBukti = true;
+          render();
+        });
+        $("phAlert").addEventListener("click", function (e) {
+          var b = e.target.closest("[data-act]");
+          if (!b) return;
+          var a = b.getAttribute("data-act");
+          if (a === "replace") replacePod();
+          else if (a === "bukti") {
+            S.showBukti = true;
+            render();
+          }
+        });
+        $("buktiOv").addEventListener("click", function (e) {
+          var b = e.target.closest("[data-act]");
+          if (!b) return;
+          var a = b.getAttribute("data-act");
+          if (a === "close") {
+            S.showBukti = false;
+            render();
+          } else if (a === "download") {
+            toast(
+              "Contoh: laporan PDF bertanggal berisi riwayat ini, untuk mediasi atau pengadilan.",
+            );
+          }
+        });
+        $("resetBtn").addEventListener("click", function () {
+          stopRing();
+          stopTick();
+          initState();
+          $("swClass").checked = false;
+          $("swBusy").checked = false;
+          render();
+        });
 
-  /* ---------- render ---------- */
-  function render(){
-    var pod=$('pod'),scr=$('podScreen'),btn=$('podBtn'),lbl=$('podLbl'),hint=$('podHint');
-    pod.className='pod';scr.className='screen';btn.className='podbtn'+(podPress.down?' pressed':'');
-    var m=S.mode,html='',label='AYAH',h='';
-    if(m==='sos'){html='<span class="big" style="font-size:22px">Darurat</span><span class="sm">Lokasi dikirim ke Ayah dan Ibu</span>';label='OK';btn.className+=' red';h='Darurat terkirim.';}
-    else if(S.classMode){pod.className+=' dim';html=BOOK+'<span style="font-size:15px;font-weight:800">Mode Kelas</span><span class="sm">sampai 12.00</span>';label='TAHAN 5 DTK';btn.className+=' grey';h='Di kelas, pod diam. Tahan tombol 5 detik hanya untuk darurat.';}
-    else if(m==='anak_calling'){html='<span class="sm">Menelepon…</span><span class="big">Ayah</span>'+WAVE(true);label='BATAL';btn.className+=' red';h='Menunggu Ayah mengangkat. Tekan untuk membatalkan.';}
-    else if(m==='ayah_calling'){pod.className+=' glow-y';scr.className+=' yellow';html='<span class="big">Ayah</span><span style="font-size:14px;font-weight:800">menelepon…</span>';label='ANGKAT';btn.className+=' green';h='Pod berdering! Tekan tombol hijau untuk mengangkat.';}
-    else if(m==='call'){pod.className+=' glow-g';html='<span class="sm" style="color:#C9F5E3">Bersama Ayah</span>'+WAVE(true)+'<span class="big" style="font-size:22px">'+fmtLong((Date.now()-S.callStart)/1000)+'</span>';label='TUTUP';btn.className+=' red';h='Tersambung, dua arah. Tekan sekali untuk menutup.';}
-    else if(m==='anak_ptt'){html=(S.busy?'<span class="sm" style="color:#fff">Merekam pesan untuk Ayah</span>':'<span><span class="live">LIVE</span><span style="font-size:13px;font-weight:800">Ayah mendengar</span></span>')+WAVE()+'<span class="sm">'+fmt((Date.now()-S.pttStart)/1000)+'</span>';label='LEPAS';h=S.busy?'Ayah sedang rapat, jadi suaramu disimpan sebagai pesan.':'Suaramu langsung terdengar di HP Ayah. Lepas untuk selesai.';}
-    else if(m==='ayah_ptt'){pod.className+=' glow-y';html='<span><span class="live">LIVE</span><span style="font-size:13px;font-weight:800">Ayah bicara</span></span>'+WAVE();h='Suara Ayah langsung keluar dari speaker pod.';}
-    else{
-      var st=S.busy?'<span class="sm">Ayah rapat · tahan untuk pesan</span>':'<span class="sm" style="color:#C9F5E3"><span class="dot"></span>Ayah online</span>';
-      if(S.lamp==='kangen')st='<span class="sm" style="color:#FFC233">Ayah kangen kamu!</span>';
-      html='<span class="big">'+now()+'</span>'+KIKO_SVG+st;
-      h=S.busy?'Ayah sedang rapat. Tahan tombol untuk meninggalkan pesan suara.':'Tekan sekali untuk menelepon Ayah. Tahan untuk walkie-talkie.';
-    }
-    scr.innerHTML=html;lbl.textContent=label;hint.textContent=h;
+        /* ---------- render ---------- */
+        function render() {
+          var pod = $("pod"),
+            scr = $("podScreen"),
+            btn = $("podBtn"),
+            lbl = $("podLbl"),
+            hint = $("podHint");
+          pod.className = "pod";
+          scr.className = "screen";
+          btn.className = "podbtn" + (podPress.down ? " pressed" : "");
+          var m = S.mode,
+            html = "",
+            label = "AYAH",
+            h = "";
+          if (m === "sos") {
+            html =
+              '<span class="big" style="font-size:22px">Darurat</span><span class="sm">Lokasi dikirim ke Ayah</span>';
+            label = "OK";
+            btn.className += " red";
+            h = "Darurat terkirim.";
+          } else if (S.taken) {
+            pod.className += " dim";
+            html =
+              LOCK +
+              '<span style="font-size:15px;font-weight:800">Terkunci</span><span class="sm">Hanya aktif di pergelangan Raka</span>';
+            label = "TERKUNCI";
+            btn.className += " grey";
+            h =
+              "Strap dipotong: pod terkunci dan tidak bisa dipakai orang lain. Ayah sudah diberi tahu.";
+          } else if (!S.worn) {
+            pod.className += " dim";
+            html =
+              '<span style="font-size:15px;font-weight:800">Pod dilepas</span><span class="sm">Pasang lagi dengan sidik jari Raka</span>';
+            label = "DILEPAS";
+            btn.className += " grey";
+            h =
+              "Raka melepas pod sendiri. Hanya Raka yang bisa membuka dan memasangnya.";
+          } else if (S.classMode) {
+            pod.className += " dim";
+            html =
+              BOOK +
+              '<span style="font-size:15px;font-weight:800">Mode Kelas</span><span class="sm">sampai 12.00</span>';
+            label = "TAHAN 5 DTK";
+            btn.className += " grey";
+            h = "Di kelas, pod diam. Tahan tombol 5 detik hanya untuk darurat.";
+          } else if (m === "anak_calling") {
+            html =
+              '<span class="sm">Menelepon…</span><span class="big">Ayah</span>' +
+              WAVE(true);
+            label = "BATAL";
+            btn.className += " red";
+            h = "Menunggu Ayah mengangkat. Tekan untuk membatalkan.";
+          } else if (m === "ayah_calling") {
+            pod.className += " glow-y";
+            scr.className += " yellow";
+            html =
+              '<span class="big">Ayah</span><span style="font-size:14px;font-weight:800">menelepon…</span>';
+            label = "ANGKAT";
+            btn.className += " green";
+            h = "Pod berdering! Tekan tombol hijau untuk mengangkat.";
+          } else if (m === "call") {
+            pod.className += " glow-g";
+            html =
+              '<span class="sm" style="color:#C9F5E3">Bersama Ayah</span>' +
+              WAVE(true) +
+              '<span class="big" style="font-size:22px">' +
+              fmtLong((Date.now() - S.callStart) / 1000) +
+              "</span>";
+            label = "TUTUP";
+            btn.className += " red";
+            h = "Tersambung, dua arah. Tekan sekali untuk menutup.";
+          } else if (m === "anak_ptt") {
+            html =
+              (S.busy
+                ? '<span class="sm" style="color:#fff">Merekam pesan untuk Ayah</span>'
+                : '<span><span class="live">LIVE</span><span style="font-size:13px;font-weight:800">Ayah mendengar</span></span>') +
+              WAVE() +
+              '<span class="sm">' +
+              fmt((Date.now() - S.pttStart) / 1000) +
+              "</span>";
+            label = "LEPAS";
+            h = S.busy
+              ? "Ayah sedang rapat, jadi suaramu disimpan sebagai pesan."
+              : "Suaramu langsung terdengar di HP Ayah. Lepas untuk selesai.";
+          } else if (m === "ayah_ptt") {
+            pod.className += " glow-y";
+            html =
+              '<span><span class="live">LIVE</span><span style="font-size:13px;font-weight:800">Ayah bicara</span></span>' +
+              WAVE();
+            h = "Suara Ayah langsung keluar dari speaker pod.";
+          } else {
+            var st = S.busy
+              ? '<span class="sm">Ayah rapat · tahan untuk pesan</span>'
+              : '<span class="sm" style="color:#C9F5E3"><span class="dot"></span>Ayah online</span>';
+            if (S.lamp === "kangen")
+              st =
+                '<span class="sm" style="color:#FFC233">Ayah kangen kamu!</span>';
+            html = '<span class="big">' + now() + "</span>" + KIKO_SVG + st;
+            h = S.busy
+              ? "Ayah sedang rapat. Tahan tombol untuk meninggalkan pesan suara."
+              : "Tekan sekali untuk menelepon Ayah. Tahan untuk walkie-talkie.";
+          }
+          scr.innerHTML = html;
+          lbl.textContent = label;
+          hint.textContent = h;
+          var lc = $("lockChip");
+          if (S.taken) {
+            lc.className = "chip bad";
+            lc.textContent = "Strap dipotong · pod terkunci";
+          } else if (!S.worn) {
+            lc.className = "chip off";
+            lc.textContent = "Tidak dipakai · dilepas oleh Raka";
+          } else {
+            lc.className = "chip";
+            lc.textContent =
+              "Kunci Anak aktif · hanya sidik jari Raka yang bisa membuka";
+          }
+          $("selfBtn").textContent =
+            S.worn || S.taken ? "Raka melepas sendiri" : "Raka memakai lagi";
+          $("selfBtn").disabled = S.taken;
+          $("takeBtn").disabled = S.taken;
 
-    /* lamp */
-    var lamp=$('lamp');lamp.className='lamp'+(S.lamp!=='off'?' '+S.lamp:'');
-    $('lampText').innerHTML='<strong>Lampu Ayah Ada</strong>'+(S.lamp==='kangen'?'Ayah kangen! Sentuh lampu untuk membalas.':S.lamp==='balas'?'Terkirim: Ayah tahu Raka membalas.':'Lampu tidur di kamar Raka. Menyala kuning saat Ayah kangen; sentuh untuk membalas.');
+          /* lamp */
+          var lamp = $("lamp");
+          lamp.className = "lamp" + (S.lamp !== "off" ? " " + S.lamp : "");
+          $("lampText").innerHTML =
+            "<strong>Lampu Ayah Ada</strong>" +
+            (S.lamp === "kangen"
+              ? "Ayah kangen! Sentuh lampu untuk membalas."
+              : S.lamp === "balas"
+                ? "Terkirim: Ayah tahu Raka membalas."
+                : "Lampu tidur di kamar Raka. Menyala kuning saat Ayah kangen; sentuh untuk membalas.");
 
-    /* phone status */
-    var ps=$('phStatus');
-    if(S.classMode){ps.textContent='Mode Kelas · sampai 12.00';ps.className='st warn';}
-    else{ps.innerHTML='<span class="dot" style="background:#2EBD85"></span>Online · bisa langsung bicara';ps.className='st';}
-    $('phBanner').innerHTML=S.busy?'<div class="banner">Kamu sedang rapat: panggilan Raka disimpan sebagai pesan suara.</div>':'';
+          /* phone status */
+          var ps = $("phStatus");
+          if (S.taken) {
+            ps.textContent = "Pod terkunci · strap dipotong";
+            ps.className = "st warn";
+          } else if (!S.worn) {
+            ps.textContent = "Pod sedang tidak dipakai";
+            ps.className = "st warn";
+          } else if (S.classMode) {
+            ps.textContent = "Mode Kelas · sampai 12.00";
+            ps.className = "st warn";
+          } else {
+            ps.innerHTML =
+              '<span class="dot" style="background:#2EBD85"></span>Online · bisa langsung bicara';
+            ps.className = "st";
+          }
+          $("phBanner").innerHTML = S.busy
+            ? '<div class="banner">Kamu sedang rapat: panggilan Raka disimpan sebagai pesan suara.</div>'
+            : "";
 
-    /* feed */
-    var f=$('feed'),out='';
-    S.events.forEach(function(ev){
-      out+='<div class="ev '+ev.who+'">'+ev.text+(ev.time?'<small>'+ev.time+'</small>':'')+'</div>';
-    });
-    if(m==='anak_ptt'&&!S.busy)out+='<div class="ev live-ev"><span class="live">LIVE</span>Raka sedang bicara… '+fmt((Date.now()-S.pttStart)/1000)+'</div>';
-    if(m==='ayah_ptt')out+='<div class="ev ayah"><span class="live">LIVE</span>Kamu bicara ke pod Raka… '+fmt((Date.now()-S.pttStart)/1000)+'</div>';
-    if(m==='ayah_rec')out+='<div class="ev ayah">Merekam pesan (Raka di kelas)… '+fmt((Date.now()-S.pttStart)/1000)+'</div>';
-    var atBottom=f.scrollHeight-f.scrollTop-f.clientHeight<40;
-    f.innerHTML=out;if(atBottom||true)f.scrollTop=f.scrollHeight;
+          $("phAlert").innerHTML = S.taken
+            ? '<div class="alert" role="alert"><b>Strap pod Raka dipotong</b>Pod dilepas tanpa sidik jari Raka dan kini terkunci. Kejadian ini tercatat di riwayat bukti.<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="mini" type="button" data-act="replace">Pasang pod pengganti</button><button class="mini light" type="button" data-act="bukti">Lihat bukti</button></div></div>'
+            : "";
 
-    /* kiko */
-    $('kikoBar').style.width=S.kiko+'%';$('kikoPct').textContent=S.kiko+'%';
-    $('kikoBarWrap').setAttribute('aria-label','Rasa senang Kiko '+S.kiko+' persen');
+          /* bukti */
+          var bo = $("buktiOv");
+          if (S.showBukti) {
+            var li = "";
+            S.log
+              .slice()
+              .reverse()
+              .forEach(function (l) {
+                li +=
+                  '<div class="log' +
+                  (l.bad ? " bad" : "") +
+                  '">' +
+                  l.text +
+                  "<small>" +
+                  l.t +
+                  "</small></div>";
+              });
+            var nBad = S.log.filter(function (l) {
+              return l.bad;
+            }).length;
+            bo.innerHTML =
+              '<div class="bukti"><div class="bukti-head"><h3>Riwayat bukti</h3><button class="mini light" type="button" data-act="close">Tutup</button></div><div class="bukti-list"><p style="margin:0 0 4px;font-size:12px;font-weight:800;color:#5A6378">' +
+              nBad +
+              " kejadian perlu perhatian · tercatat otomatis, tidak bisa diubah</p>" +
+              li +
+              '</div><div class="bukti-foot"><button class="act call" type="button" data-act="download" style="width:100%">Unduh laporan untuk mediasi</button><p>Bisa dibawa ke mediasi, pengadilan, atau pengaduan KPAI.</p></div></div>';
+          } else bo.innerHTML = "";
 
-    /* overlay */
-    var ov=$('phOverlay'),o='';
-    if(m==='anak_calling'){
-      o='<div class="overlay"><p class="k">Panggilan masuk</p><p class="n">Raka menelepon</p><p class="t">dari Nakku Pod</p><div class="ring pulse"><div class="av">R</div></div><div class="ov-actions"><div class="circ-lbl"><button class="circ no" type="button" data-act="decline" aria-label="Tolak">'+PHONE_ICON+'</button>Tolak</div><div class="circ-lbl"><button class="circ ok" type="button" data-act="accept" aria-label="Angkat">'+PHONE_ICON+'</button>Angkat</div></div></div>';
-    }else if(m==='ayah_calling'){
-      o='<div class="overlay"><p class="k">Telepon langsung</p><p class="n">Memanggil Raka…</p><p class="t">pod sedang berdering</p><div class="ring pulse"><div class="av">R</div></div><div class="ov-actions"><div class="circ-lbl"><button class="circ no" type="button" data-act="cancel" aria-label="Batal">'+PHONE_ICON+'</button>Batal</div></div></div>';
-    }else if(m==='call'){
-      o='<div class="overlay"><p class="k">Telepon langsung</p><p class="n">Raka</p><p class="t" id="ovTimer">'+fmtLong((Date.now()-S.callStart)/1000)+'</p><div class="ring"><div class="av">R</div></div>'+WAVE(true)+'<p style="margin:4px 0 0;font-size:13px;color:#C9D3EA;font-weight:700">Raka bicara lewat Nakku Pod</p><div class="ov-actions"><div class="circ-lbl"><button class="circ no" type="button" data-act="hangup" aria-label="Akhiri telepon">'+PHONE_ICON+'</button>Akhiri</div></div></div>';
-    }
-    if(ov.getAttribute('data-m')!==m){
-      ov.innerHTML=o;ov.setAttribute('data-m',m);
-    }else if(m==='call'){
-      var t=$('ovTimer');if(t)t.textContent=fmtLong((Date.now()-S.callStart)/1000);
-    }
-  }
-  $('phOverlay').addEventListener('click',function(e){
-    var b=e.target.closest('[data-act]');if(!b)return;
-    var a=b.getAttribute('data-act');
-    if(a==='accept')connect();else if(a==='decline')decline();else if(a==='cancel'){stopRing();addEv('sys','Panggilan dibatalkan');setMode('idle');}else if(a==='hangup')hangup();
-  });
+          /* feed */
+          var f = $("feed"),
+            out = "";
+          S.events.forEach(function (ev) {
+            out +=
+              '<div class="ev ' +
+              ev.who +
+              '">' +
+              ev.text +
+              (ev.time ? "<small>" + ev.time + "</small>" : "") +
+              "</div>";
+          });
+          if (m === "anak_ptt" && !S.busy)
+            out +=
+              '<div class="ev live-ev"><span class="live">LIVE</span>Raka sedang bicara… ' +
+              fmt((Date.now() - S.pttStart) / 1000) +
+              "</div>";
+          if (m === "ayah_ptt")
+            out +=
+              '<div class="ev ayah"><span class="live">LIVE</span>Kamu bicara ke pod Raka… ' +
+              fmt((Date.now() - S.pttStart) / 1000) +
+              "</div>";
+          if (m === "ayah_rec")
+            out +=
+              '<div class="ev ayah">Merekam pesan (Raka di kelas)… ' +
+              fmt((Date.now() - S.pttStart) / 1000) +
+              "</div>";
+          var atBottom = f.scrollHeight - f.scrollTop - f.clientHeight < 40;
+          f.innerHTML = out;
+          if (atBottom || true) f.scrollTop = f.scrollHeight;
 
-  render();
-  setInterval(function(){if(S.mode==='idle')render();},30000);
-})();
-</script>
-</body>
+          /* kiko */
+          $("kikoBar").style.width = S.kiko + "%";
+          $("kikoPct").textContent = S.kiko + "%";
+          $("kikoBarWrap").setAttribute(
+            "aria-label",
+            "Rasa senang Kiko " + S.kiko + " persen",
+          );
+
+          /* overlay */
+          var ov = $("phOverlay"),
+            o = "";
+          if (m === "anak_calling") {
+            o =
+              '<div class="overlay"><p class="k">Panggilan masuk</p><p class="n">Raka menelepon</p><p class="t">dari Nakku Pod</p><div class="ring pulse"><div class="av">R</div></div><div class="ov-actions"><div class="circ-lbl"><button class="circ no" type="button" data-act="decline" aria-label="Tolak">' +
+              PHONE_ICON +
+              '</button>Tolak</div><div class="circ-lbl"><button class="circ ok" type="button" data-act="accept" aria-label="Angkat">' +
+              PHONE_ICON +
+              "</button>Angkat</div></div></div>";
+          } else if (m === "ayah_calling") {
+            o =
+              '<div class="overlay"><p class="k">Telepon langsung</p><p class="n">Memanggil Raka…</p><p class="t">pod sedang berdering</p><div class="ring pulse"><div class="av">R</div></div><div class="ov-actions"><div class="circ-lbl"><button class="circ no" type="button" data-act="cancel" aria-label="Batal">' +
+              PHONE_ICON +
+              "</button>Batal</div></div></div>";
+          } else if (m === "call") {
+            o =
+              '<div class="overlay"><p class="k">Telepon langsung</p><p class="n">Raka</p><p class="t" id="ovTimer">' +
+              fmtLong((Date.now() - S.callStart) / 1000) +
+              '</p><div class="ring"><div class="av">R</div></div>' +
+              WAVE(true) +
+              '<p style="margin:4px 0 0;font-size:13px;color:#C9D3EA;font-weight:700">Raka bicara lewat Nakku Pod</p><div class="ov-actions"><div class="circ-lbl"><button class="circ no" type="button" data-act="hangup" aria-label="Akhiri telepon">' +
+              PHONE_ICON +
+              "</button>Akhiri</div></div></div>";
+          }
+          if (ov.getAttribute("data-m") !== m) {
+            ov.innerHTML = o;
+            ov.setAttribute("data-m", m);
+          } else if (m === "call") {
+            var t = $("ovTimer");
+            if (t) t.textContent = fmtLong((Date.now() - S.callStart) / 1000);
+          }
+        }
+        $("phOverlay").addEventListener("click", function (e) {
+          var b = e.target.closest("[data-act]");
+          if (!b) return;
+          var a = b.getAttribute("data-act");
+          if (a === "accept") connect();
+          else if (a === "decline") decline();
+          else if (a === "cancel") {
+            stopRing();
+            addEv("sys", "Panggilan dibatalkan");
+            setMode("idle");
+          } else if (a === "hangup") hangup();
+        });
+
+        render();
+        setInterval(function () {
+          if (S.mode === "idle") render();
+        }, 30000);
+      })();
+    </script>
+  </body>
 </html>
